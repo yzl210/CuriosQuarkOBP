@@ -1,2 +1,2 @@
 # Curios Quark Oddities backpack
-A minecraft mod adds curios support for quark oddities backpack
+A minecraft mod adds [Curios](https://www.curseforge.com/minecraft/mc-mods/curios) support for [Quark Oddities](https://www.curseforge.com/minecraft/mc-mods/quark-oddities) backpack
