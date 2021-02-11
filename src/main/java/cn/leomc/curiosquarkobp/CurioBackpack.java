@@ -11,23 +11,23 @@ import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import org.apache.logging.log4j.LogManager;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import vazkii.quark.addons.oddities.client.model.BackpackModel;
 
 public class CurioBackpack implements ICurio {
 
     protected ItemStack stack;
+    @OnlyIn(Dist.CLIENT)
     protected BackpackModel model;
 
     public CurioBackpack(ItemStack stack) {
         this.stack = stack;
-        this.model = new BackpackModel();
     }
 
     @Override
@@ -36,15 +36,18 @@ public class CurioBackpack implements ICurio {
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void render(String identifier, int index, MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, LivingEntity livingEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+        if (this.model == null)
+            model = new BackpackModel();
         ArmorItem armoritem = (ArmorItem) stack.getItem();
         boolean hasEffect = stack.hasEffect();
         int i = ((net.minecraft.item.IDyeableArmorItem) armoritem).getColor(stack);
         EntityRenderer<?> entityRenderer = Minecraft.getInstance().getRenderManager().getRenderer(livingEntity);
-        if(entityRenderer instanceof LivingRenderer) {
+        if (entityRenderer instanceof LivingRenderer) {
             try {
                 ((LivingRenderer<LivingEntity, PlayerModel<LivingEntity>>) entityRenderer).getEntityModel().setModelAttributes(model);
-            }catch (ClassCastException e){
+            } catch (ClassCastException e) {
                 e.printStackTrace();
                 return;
             }
@@ -60,12 +63,14 @@ public class CurioBackpack implements ICurio {
         render(matrixStack, renderTypeBuffer, light, hasEffect, model, 1.0F, 1.0F, 1.0F, getArmorResource(livingEntity, "overlay"));
     }
 
+    @OnlyIn(Dist.CLIENT)
     private void render(MatrixStack matrixStack, IRenderTypeBuffer renderTypeBuffer, int light, boolean glint, BackpackModel backpackModel, float r, float g, float b, ResourceLocation armorResource) {
         IVertexBuilder ivertexbuilder = ItemRenderer.getArmorVertexBuilder(renderTypeBuffer, RenderType.getArmorCutoutNoCull(armorResource), false, glint);
         backpackModel.render(matrixStack, ivertexbuilder, light, OverlayTexture.NO_OVERLAY, r, g, b, 1.0F);
     }
 
-    private ResourceLocation getArmorResource(LivingEntity livingEntity, String type){
+    @OnlyIn(Dist.CLIENT)
+    private ResourceLocation getArmorResource(LivingEntity livingEntity, String type) {
         return new ResourceLocation(stack.getItem().getArmorTexture(stack, livingEntity, EquipmentSlotType.CHEST, type));
     }
 
