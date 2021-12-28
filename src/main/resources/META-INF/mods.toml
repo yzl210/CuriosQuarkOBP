@@ -1,15 +1,16 @@
 modLoader = "javafml"
-loaderVersion = "[34,)"
+loaderVersion = "[39,)"
 license = "GNU GPLv3"
 [[mods]]
 modId = "curiosquarkobp"
-version = "${version}"
+version = "${file.jarVersion}"
 displayName = "Curios Quark Oddities Backpack"
 issueTrackerURL = "https://github.com/yzl210/CuriosQuarkOBP/issues"
 authors = "yzl210"
 description = '''
 Add curios support for quark oddities backpack
 '''
+logoFile="logo.png"
 [[dependencies.curiosquarkobp]]
 modId = "quarkoddities"
 mandatory = true
@@ -22,4 +23,3 @@ mandatory = true
 versionRange = "[0,)"
 ordering = "AFTER"
 side = "BOTH"
-

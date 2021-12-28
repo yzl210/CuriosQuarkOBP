@@ -1,12 +1,11 @@
 buildscript {
     repositories {
-        maven { url = 'https://files.minecraftforge.net/maven' }
+        maven { url = 'https://maven.minecraftforge.net' }
         maven { url = 'https://repo.spongepowered.org/maven' }
-        jcenter()
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
     }
 }
@@ -15,14 +14,15 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'cn.leomc'
-version = "${version}"
+version = "${mod_version}"
 archivesBaseName = "CuriosQuarkOBP-${mc_version}"
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8'
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
 
-    mappings channel: 'snapshot', version: "${mappings_version}"
+    mappings channel: 'official', version: "${mc_version}"
 
     runs {
         client {
@@ -80,18 +80,6 @@ minecraft {
     }
 }
 
-processResources {
-    inputs.property 'version', project.version
-
-    from(sourceSets.main.resources.srcDirs) {
-        include 'META-INF/mods.toml'
-        expand 'version': project.version
-    }
-
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'META-INF/mods.toml'
-    }
-}
 
 repositories {
     maven {
@@ -109,12 +97,14 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.4.0")
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:1.16.5-4.0.4.0:api")
-    compile fg.deobf("vazkii.quark:Quark:r2.4-305.1724")
-    compile fg.deobf("curse.maven:quarkoddities-301051:3088871")
-    compile fg.deobf("vazkii.autoreglib:AutoRegLib:1.6-48.88")
+    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
+    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    implementation  fg.deobf("vazkii.quark:Quark:${quark_version}")
+    implementation fg.deobf("curse.maven:quarkoddities-301051:3575623")
+    implementation fg.deobf("vazkii.autoreglib:AutoRegLib:1.7-53.110")
 }
+
+
 
 jar {
     manifest {
@@ -122,16 +112,12 @@ jar {
                 "Specification-Title": "curiosquarkobp",
                 "Specification-Version": "1",
                 "Implementation-Title": project.name,
-                "Implementation-Version": "${version}",
+                "Implementation-Version": "${mod_version}",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs": "curiosquarkobp.mixins.json"
         ])
     }
 
-}
-
-mixin {
-    add sourceSets.main, 'curiosquarkobp.mixins.refmap.json'
 }
 
 jar.finalizedBy('reobfJar')
