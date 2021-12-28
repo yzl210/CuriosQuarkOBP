@@ -97,8 +97,7 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
-    runtimeOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-    compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
     implementation  fg.deobf("vazkii.quark:Quark:${quark_version}")
     implementation fg.deobf("curse.maven:quarkoddities-301051:3575623")
     implementation fg.deobf("vazkii.autoreglib:AutoRegLib:1.7-53.110")

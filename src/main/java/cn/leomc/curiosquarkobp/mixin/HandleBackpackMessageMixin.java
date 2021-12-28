@@ -42,10 +42,12 @@ public abstract class HandleBackpackMessageMixin implements IMessage {
                 }
 
                 if (stack.getItem() instanceof MenuProvider && player.containerMenu != null) {
-                    ItemStack holding = player.containerMenu.getCarried();
-                    player.containerMenu.setCarried(ItemStack.EMPTY);
+                    ItemStack holding = player.inventoryMenu.getCarried();
+                    player.inventoryMenu.setCarried(ItemStack.EMPTY);
+                    player.doCloseContainer();
+
                     NetworkHooks.openGui(player, (MenuProvider) stack.getItem(), player.blockPosition());
-                    player.inventoryMenu.setCarried(holding);
+                    player.containerMenu.setCarried(holding);
                 }
             } else {
                 if (player.containerMenu != null) {

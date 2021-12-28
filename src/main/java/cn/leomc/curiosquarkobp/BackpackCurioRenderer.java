@@ -26,7 +26,6 @@ public class BackpackCurioRenderer implements ICurioRenderer {
 
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-
         ArmorItem armoritem = (ArmorItem) stack.getItem();
         boolean hasFoil = stack.hasFoil();
         int i = ((DyeableArmorItem) armoritem).getColor(stack);
@@ -39,7 +38,6 @@ public class BackpackCurioRenderer implements ICurioRenderer {
         float b = (float) (i & 255) / 255.0F;
         render(poseStack, multiBufferSource, light, hasFoil, model, r, g, b, getArmorResource(stack, null));
         render(poseStack, multiBufferSource, light, hasFoil, model, 1.0F, 1.0F, 1.0F, getArmorResource(stack, "overlay"));
-
     }
 
     private void render(PoseStack poseStack, MultiBufferSource multiBufferSource, int light, boolean glint, HumanoidModel<LivingEntity> backpackModel, float r, float g, float b, ResourceLocation armorResource) {
