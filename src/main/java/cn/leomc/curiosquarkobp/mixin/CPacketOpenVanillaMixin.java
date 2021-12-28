@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import top.theillusivec4.curios.common.network.NetworkHandler;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
+import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 
 import java.util.function.Supplier;
 
@@ -25,6 +26,8 @@ public class CPacketOpenVanillaMixin {
             if (sender != null) {
                 ItemStack stack = sender.containerMenu.getCarried();
                 sender.containerMenu.setCarried(ItemStack.EMPTY);
+                if(sender.containerMenu.getClass() != BackpackMenu.class)
+                    sender.doCloseContainer();
 
                 if (!stack.isEmpty()) {
                     sender.containerMenu.setCarried(stack);
