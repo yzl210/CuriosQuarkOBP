@@ -6,6 +6,7 @@
   "mixins": [
     "BackpackMenuMixin",
     "BackpackModuleMixin",
+    "CPacketOpenCuriosMixin",
     "CPacketOpenVanillaMixin",
     "HandleBackpackMessageMixin"
   ],
