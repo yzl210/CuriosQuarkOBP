@@ -13,7 +13,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 
-group = 'cn.leomc'
+group = 'cn.leomc.curiosquarkobp'
 version = "${mod_version}"
 archivesBaseName = "CuriosQuarkOBP-${mc_version}"
 
@@ -40,6 +40,10 @@ minecraft {
                     source sourceSets.main
                 }
             }
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
         }
 
         server {
@@ -57,6 +61,10 @@ minecraft {
                     source sourceSets.main
                 }
             }
+
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${buildDir}/createSrgToMcp/output.srg"
+
         }
 
         data {
@@ -100,23 +108,27 @@ dependencies {
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
     implementation  fg.deobf("vazkii.quark:Quark:${quark_version}")
     implementation fg.deobf("curse.maven:quarkoddities-301051:3575623")
-    implementation fg.deobf("vazkii.autoreglib:AutoRegLib:1.7-53.110")
+    implementation fg.deobf("vazkii.autoreglib:AutoRegLib:1.7-54.112")
 }
 
 
 
 jar {
-    manifest {
+    manifest({
         attributes([
-                "Specification-Title": "curiosquarkobp",
-                "Specification-Version": "1",
-                "Implementation-Title": project.name,
-                "Implementation-Version": "${mod_version}",
+                "Specification-Title"     : "curiosquarkobp",
+                "Specification-Version"   : "1",
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : "${mod_version}",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
-                "MixinConfigs": "curiosquarkobp.mixins.json"
+                "MixinConfigs"            : "curiosquarkobp.mixins.json"
         ])
-    }
+    })
 
 }
 
 jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

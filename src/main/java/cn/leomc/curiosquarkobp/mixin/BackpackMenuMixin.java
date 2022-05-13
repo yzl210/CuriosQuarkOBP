@@ -4,13 +4,12 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import vazkii.arl.util.InventoryIIH;
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 import vazkii.quark.addons.oddities.inventory.SlotCachingItemHandler;
@@ -31,14 +30,14 @@ public abstract class BackpackMenuMixin extends InventoryMenu {
             remap = false
     )
     private void init(int windowId, Player player, CallbackInfo ci) {
-        Optional<ImmutableTriple<String, Integer, ItemStack>> optional = CuriosApi.getCuriosHelper().findEquippedCurio(BackpackModule.backpack, player);
+        Optional<SlotResult> result = CuriosApi.getCuriosHelper().findFirstCurio(player, BackpackModule.backpack);
 
         Slot anchor = slots.get(9);
         int left = anchor.x;
         int top = anchor.y - 58;
 
-        if (player.getInventory().armor.get(2).getItem() != BackpackModule.backpack && optional.isPresent()) {
-            InventoryIIH inv = new InventoryIIH(optional.get().getRight());
+        if (player.getInventory().armor.get(2).getItem() != BackpackModule.backpack && result.isPresent()) {
+            InventoryIIH inv = new InventoryIIH(result.get().stack());
 
             for (int i = 0; i < 3; ++i)
                 for (int j = 0; j < 9; ++j) {

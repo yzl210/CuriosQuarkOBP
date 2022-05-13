@@ -7,11 +7,11 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkHooks;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import vazkii.arl.network.IMessage;
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 import vazkii.quark.addons.oddities.module.BackpackModule;
@@ -36,9 +36,9 @@ public abstract class HandleBackpackMessageMixin implements IMessage {
             if (open) {
                 ItemStack stack = player.getItemBySlot(EquipmentSlot.CHEST);
                 if (stack.getItem() != BackpackModule.backpack) {
-                    Optional<ImmutableTriple<String, Integer, ItemStack>> backpack = CuriosApi.getCuriosHelper().findEquippedCurio(BackpackModule.backpack, player);
-                    if (backpack.isPresent())
-                        stack = backpack.get().getRight();
+                    Optional<SlotResult> result = CuriosApi.getCuriosHelper().findFirstCurio(player, BackpackModule.backpack);
+                    if (result.isPresent())
+                        stack = result.get().stack();
                 }
 
                 if (stack.getItem() instanceof MenuProvider && player.containerMenu != null) {

@@ -19,13 +19,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkHooks;
-import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.CuriosCapability;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
+import top.theillusivec4.curios.api.*;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
@@ -86,11 +82,11 @@ public class CuriosQuarkOdditiesBackpack {
 
             if(player.containerMenu.getClass() == BackpackMenu.class) {
                 if (event.getFrom().getItem() == BackpackModule.backpack && event.getTo().getItem() != BackpackModule.backpack) {
-                    Optional<ImmutableTriple<String, Integer, ItemStack>> backpack = CuriosApi.getCuriosHelper().findEquippedCurio(BackpackModule.backpack, player);
-                    if (backpack.isPresent()) {
+                    Optional<SlotResult> result = CuriosApi.getCuriosHelper().findFirstCurio(player, BackpackModule.backpack);
+                    if (result.isPresent()) {
                         ItemStack holding = player.containerMenu.getCarried();
                         player.containerMenu.setCarried(ItemStack.EMPTY);
-                        NetworkHooks.openGui(player, (MenuProvider) backpack.get().getRight().getItem(), player.blockPosition());
+                        NetworkHooks.openGui(player, (MenuProvider) result.get().stack().getItem(), player.blockPosition());
                         player.containerMenu.setCarried(holding);
                     }
                 } else if (event.getTo().getItem() == BackpackModule.backpack && event.getFrom().getItem() != BackpackModule.backpack) {

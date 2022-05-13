@@ -10,9 +10,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 import top.theillusivec4.curios.common.inventory.container.CuriosContainerProvider;
 import top.theillusivec4.curios.common.network.NetworkHandler;
 import top.theillusivec4.curios.common.network.client.CPacketOpenCurios;
-import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
-import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 
 import java.util.function.Supplier;
 
