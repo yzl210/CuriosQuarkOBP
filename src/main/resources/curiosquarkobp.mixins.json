@@ -8,7 +8,8 @@
     "BackpackModuleMixin",
     "CPacketOpenCuriosMixin",
     "CPacketOpenVanillaMixin",
-    "HandleBackpackMessageMixin"
+    "HandleBackpackMessageMixin",
+    "TotemOfHoldingEntityMixin"
   ],
   "client": [
   ],
