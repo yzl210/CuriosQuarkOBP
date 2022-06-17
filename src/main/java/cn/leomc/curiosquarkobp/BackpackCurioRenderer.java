@@ -28,8 +28,11 @@ public class BackpackCurioRenderer implements ICurioRenderer {
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if(stack.getItem() instanceof BackpackItem backpack) {
-            renderLayerParent.getModel();
-            renderLayerParent.getModel().copyPropertiesTo(model);
+            EntityModel<T> entityModel = renderLayerParent.getModel();
+            if(entityModel instanceof HumanoidModel<T> humanoidModel)
+                humanoidModel.copyPropertiesTo(model);
+            else
+                entityModel.copyPropertiesTo(model);
             boolean hasFoil = stack.hasFoil();
             int i = backpack.getColor(stack);
             float r = (float) (i >> 16 & 255) / 255.0F;
