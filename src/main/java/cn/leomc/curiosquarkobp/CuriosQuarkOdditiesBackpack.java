@@ -77,7 +77,7 @@ public class CuriosQuarkOdditiesBackpack {
 
         @SubscribeEvent
         public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event){
-            if(!(event.getEntityLiving() instanceof ServerPlayer player) || player.isDeadOrDying() || player.isRemoved() || event.getSlot() != EquipmentSlot.CHEST)
+            if(!(event.getEntity() instanceof ServerPlayer player) || player.isDeadOrDying() || player.isRemoved() || event.getSlot() != EquipmentSlot.CHEST)
                 return;
 
             if(player.containerMenu.getClass() == BackpackMenu.class) {
@@ -86,13 +86,13 @@ public class CuriosQuarkOdditiesBackpack {
                     if (result.isPresent()) {
                         ItemStack holding = player.containerMenu.getCarried();
                         player.containerMenu.setCarried(ItemStack.EMPTY);
-                        NetworkHooks.openGui(player, (MenuProvider) result.get().stack().getItem(), player.blockPosition());
+                        NetworkHooks.openScreen(player, (MenuProvider) result.get().stack().getItem(), player.blockPosition());
                         player.containerMenu.setCarried(holding);
                     }
                 } else if (event.getTo().getItem() == BackpackModule.backpack && event.getFrom().getItem() != BackpackModule.backpack) {
                     ItemStack holding = player.containerMenu.getCarried();
                     player.containerMenu.setCarried(ItemStack.EMPTY);
-                    NetworkHooks.openGui(player, (MenuProvider) event.getTo().getItem(), player.blockPosition());
+                    NetworkHooks.openScreen(player, (MenuProvider) event.getTo().getItem(), player.blockPosition());
                     player.containerMenu.setCarried(holding);
                 }
             }

@@ -28,7 +28,7 @@ public class CPacketOpenCuriosMixin {
             if (sender != null) {
                 ItemStack stack = sender.inventoryMenu.getCarried();
                 sender.inventoryMenu.setCarried(ItemStack.EMPTY);
-                NetworkHooks.openGui(sender, new CuriosContainerProvider());
+                NetworkHooks.openScreen(sender, new CuriosContainerProvider());
 
                 if (!stack.isEmpty()) {
                     sender.containerMenu.setCarried(stack);
