@@ -12,6 +12,7 @@
     "TotemOfHoldingEntityMixin"
   ],
   "client": [
+    "BackpackModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
