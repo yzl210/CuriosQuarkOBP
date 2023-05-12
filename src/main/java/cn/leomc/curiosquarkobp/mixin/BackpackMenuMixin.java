@@ -12,7 +12,7 @@ import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import vazkii.arl.util.InventoryIIH;
 import vazkii.quark.addons.oddities.inventory.BackpackMenu;
-import vazkii.quark.addons.oddities.inventory.SlotCachingItemHandler;
+import vazkii.quark.addons.oddities.inventory.slot.BackpackSlot;
 import vazkii.quark.addons.oddities.module.BackpackModule;
 
 import java.util.Optional;
@@ -42,7 +42,7 @@ public abstract class BackpackMenuMixin extends InventoryMenu {
             for (int i = 0; i < 3; ++i)
                 for (int j = 0; j < 9; ++j) {
                     int k = j + i * 9;
-                    addSlot(new SlotCachingItemHandler(inv, k, left + j * 18, top + i * 18));
+                    addSlot(new BackpackSlot(inv, k, left + j * 18, top + i * 18));
                 }
         }
     }
