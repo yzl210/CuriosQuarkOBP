@@ -3,7 +3,6 @@ package cn.leomc.curiosquarkobp;
 
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
@@ -18,17 +17,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.NetworkHooks;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import top.theillusivec4.curios.api.*;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.type.capability.ICurio;
-import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 import vazkii.quark.addons.oddities.module.BackpackModule;
 
 import javax.annotation.Nonnull;
-import java.util.Optional;
 
 @Mod(CuriosQuarkOdditiesBackpack.MODID)
 public class CuriosQuarkOdditiesBackpack {
@@ -80,23 +76,11 @@ public class CuriosQuarkOdditiesBackpack {
             if(!(event.getEntity() instanceof ServerPlayer player) || player.isDeadOrDying() || player.isRemoved() || event.getSlot() != EquipmentSlot.CHEST)
                 return;
 
-            if(player.containerMenu.getClass() == BackpackMenu.class) {
-                if (event.getFrom().getItem() == BackpackModule.backpack && event.getTo().getItem() != BackpackModule.backpack) {
-                    Optional<SlotResult> result = CuriosApi.getCuriosHelper().findFirstCurio(player, BackpackModule.backpack);
-                    if (result.isPresent()) {
-                        ItemStack holding = player.containerMenu.getCarried();
-                        player.containerMenu.setCarried(ItemStack.EMPTY);
-                        NetworkHooks.openScreen(player, (MenuProvider) result.get().stack().getItem(), player.blockPosition());
-                        player.containerMenu.setCarried(holding);
-                    }
-                } else if (event.getTo().getItem() == BackpackModule.backpack && event.getFrom().getItem() != BackpackModule.backpack) {
-                    ItemStack holding = player.containerMenu.getCarried();
-                    player.containerMenu.setCarried(ItemStack.EMPTY);
-                    NetworkHooks.openScreen(player, (MenuProvider) event.getTo().getItem(), player.blockPosition());
-                    player.containerMenu.setCarried(holding);
-                }
+            if(event.getTo().getItem() == BackpackModule.backpack && !CuriosApi.getCuriosHelper().findCurios(player, BackpackModule.backpack).isEmpty()) {
+                player.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                if(!player.addItem(event.getTo()))
+                    player.drop(event.getTo(), false, true);
             }
-
         }
 
     }

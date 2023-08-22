@@ -10,7 +10,11 @@ buildscript {
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle'
+plugins {
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
+}
+
 apply plugin: 'org.spongepowered.mixin'
 
 group = 'cn.leomc.curiosquarkobp'
@@ -22,7 +26,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
 
-    mappings channel: 'official', version: "${mc_version}"
+    mappings channel: 'parchment', version: "2022.11.27-${mc_version}"
 
     runs {
         client {
