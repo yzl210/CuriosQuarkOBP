@@ -7,8 +7,10 @@ import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.PacketDistributor;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.theillusivec4.curios.common.network.NetworkHandler;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
@@ -25,17 +27,20 @@ public class CPacketOpenVanillaMixin implements CQOBCarriedAccessor {
         return carried;
     }
 
-    /**
-     * @author yzl210
-     */
-    @Overwrite(remap = false)
-    public static void handle(CPacketOpenVanilla msg, Supplier<NetworkEvent.Context> ctx) {
+    @Inject(
+            at = @At("HEAD"),
+            method = "handle",
+            remap = false,
+            cancellable = true
+    )
+    private static void handle(CPacketOpenVanilla msg, Supplier<NetworkEvent.Context> ctx, CallbackInfo ci) {
+        ci.cancel();
         ctx.get().enqueueWork(() -> {
             ServerPlayer sender = ctx.get().getSender();
             if (sender != null) {
                 ItemStack stack = sender.isCreative() ? ((CQOBCarriedAccessor)msg).getCarried() : sender.containerMenu.getCarried();
                 sender.containerMenu.setCarried(ItemStack.EMPTY);
-                if(sender.containerMenu.getClass() != BackpackMenu.class)
+                if(!(sender.containerMenu instanceof BackpackMenu))
                     sender.doCloseContainer();
 
                 if (!stack.isEmpty()) {
