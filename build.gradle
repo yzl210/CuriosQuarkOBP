@@ -90,6 +90,7 @@ minecraft {
 
 
 repositories {
+    mavenCentral()
     maven {
         url = "https://maven.theillusivec4.top/"
     }
@@ -109,6 +110,8 @@ dependencies {
     implementation fg.deobf("vazkii.quark:Quark:${quark_version}")
     implementation fg.deobf("curse.maven:quarkoddities-301051:3575623")
     implementation fg.deobf("vazkii.autoreglib:AutoRegLib:${arl_version}")
+
+    runtimeOnly("io.github.llamalad7:mixinextras-forge:0.2.0-beta.10")
 }
 
 
