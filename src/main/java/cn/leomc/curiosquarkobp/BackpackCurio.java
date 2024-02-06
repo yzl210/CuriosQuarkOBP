@@ -3,10 +3,10 @@ package cn.leomc.curiosquarkobp;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.violetmoon.quark.addons.oddities.module.BackpackModule;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
-import vazkii.quark.addons.oddities.module.BackpackModule;
 
 
 public class BackpackCurio implements ICurio {
@@ -28,7 +28,7 @@ public class BackpackCurio implements ICurio {
     public boolean canEquip(SlotContext slotContext) {
         return slotContext.entity() instanceof Player player
                 && player.getItemBySlot(EquipmentSlot.CHEST).getItem() != BackpackModule.backpack
-                && CuriosApi.getCuriosHelper().findCurios(player, BackpackModule.backpack).isEmpty();
+                && CuriosApi.getCuriosInventory(player).map(inv -> inv.findCurios(BackpackModule.backpack).isEmpty()).orElse(false);
     }
 
     @Override

@@ -11,19 +11,21 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
 import top.theillusivec4.curios.common.network.NetworkHandler;
 import top.theillusivec4.curios.common.network.client.CPacketOpenVanilla;
 import top.theillusivec4.curios.common.network.server.SPacketGrabbedItem;
-import vazkii.quark.addons.oddities.inventory.BackpackMenu;
 
 import java.util.function.Supplier;
 
 @Mixin(CPacketOpenVanilla.class)
 public class CPacketOpenVanillaMixin implements CQOBCarriedAccessor {
 
-    @Shadow @Final private ItemStack carried;
+    @Shadow
+    @Final
+    private ItemStack carried;
 
-    public ItemStack getCarried(){
+    public ItemStack getCarried() {
         return carried;
     }
 
@@ -38,9 +40,9 @@ public class CPacketOpenVanillaMixin implements CQOBCarriedAccessor {
         ctx.get().enqueueWork(() -> {
             ServerPlayer sender = ctx.get().getSender();
             if (sender != null) {
-                ItemStack stack = sender.isCreative() ? ((CQOBCarriedAccessor)msg).getCarried() : sender.containerMenu.getCarried();
+                ItemStack stack = sender.isCreative() ? ((CQOBCarriedAccessor) msg).getCarried() : sender.containerMenu.getCarried();
                 sender.containerMenu.setCarried(ItemStack.EMPTY);
-                if(!(sender.containerMenu instanceof BackpackMenu))
+                if (!(sender.containerMenu instanceof BackpackMenu))
                     sender.doCloseContainer();
 
                 if (!stack.isEmpty()) {

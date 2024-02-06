@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.violetmoon.quark.addons.oddities.inventory.BackpackMenu;
+import org.violetmoon.quark.addons.oddities.inventory.slot.BackpackSlot;
+import org.violetmoon.quark.addons.oddities.module.BackpackModule;
+import org.violetmoon.quark.base.util.InventoryIIH;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
-import vazkii.arl.util.InventoryIIH;
-import vazkii.quark.addons.oddities.inventory.BackpackMenu;
-import vazkii.quark.addons.oddities.inventory.slot.BackpackSlot;
-import vazkii.quark.addons.oddities.module.BackpackModule;
 
 import java.util.Optional;
 
@@ -30,7 +30,7 @@ public abstract class BackpackMenuMixin extends InventoryMenu {
             remap = false
     )
     private void init(int windowId, Player player, CallbackInfo ci) {
-        Optional<SlotResult> result = CuriosApi.getCuriosHelper().findFirstCurio(player, BackpackModule.backpack);
+        Optional<SlotResult> result = CuriosApi.getCuriosInventory(player).map(inv -> inv.findFirstCurio(BackpackModule.backpack)).orElse(Optional.empty());
 
         Slot anchor = slots.get(9);
         int left = anchor.x;

@@ -26,7 +26,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
 
-    mappings channel: 'parchment', version: "2022.11.27-${mc_version}"
+    mappings channel: 'parchment', version: "2023.09.03-${mc_version}"
 
     runs {
         client {
@@ -111,9 +111,9 @@ dependencies {
     minecraft "net.minecraftforge:forge:${mc_version}-${forge_version}"
 
     implementation fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}")
-    implementation fg.deobf("vazkii.quark:Quark:${quark_version}")
-    implementation fg.deobf("curse.maven:quarkoddities-301051:3575623")
-    implementation fg.deobf("vazkii.autoreglib:AutoRegLib:${arl_version}")
+    implementation fg.deobf("curse.maven:quark-243121:${quark_version}")
+    implementation fg.deobf("curse.maven:quarkoddities-301051:5070502")
+    implementation fg.deobf("curse.maven:zeta-968868:${zeta_version}")
 
     runtimeOnly("io.github.llamalad7:mixinextras-forge:0.2.0-beta.10")
 }

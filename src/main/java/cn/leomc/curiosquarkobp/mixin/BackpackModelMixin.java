@@ -8,8 +8,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import vazkii.quark.addons.oddities.client.model.BackpackModel;
-import vazkii.quark.base.client.render.QuarkArmorModel;
+import org.violetmoon.quark.addons.oddities.client.model.BackpackModel;
+import org.violetmoon.quark.base.client.render.QuarkArmorModel;
 
 @Mixin(BackpackModel.class)
 public class BackpackModelMixin {

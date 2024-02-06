@@ -1,30 +1,23 @@
 package cn.leomc.curiosquarkobp;
 
 
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import top.theillusivec4.curios.api.*;
+import org.violetmoon.quark.addons.oddities.module.BackpackModule;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.CuriosCapability;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 import top.theillusivec4.curios.api.type.capability.ICurio;
-import vazkii.quark.addons.oddities.module.BackpackModule;
-
-import javax.annotation.Nonnull;
 
 @Mod(CuriosQuarkOdditiesBackpack.MODID)
 public class CuriosQuarkOdditiesBackpack {
@@ -35,18 +28,12 @@ public class CuriosQuarkOdditiesBackpack {
 
     public CuriosQuarkOdditiesBackpack() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        eventBus.addListener(this::enqueueIMC);
         eventBus.addListener(this::clientSetup);
 
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
         CuriosRendererRegistry.register(BackpackModule.backpack, BackpackCurioRenderer::new);
-    }
-
-    private void enqueueIMC(InterModEnqueueEvent event) {
-        InterModComms.sendTo("curios", SlotTypeMessage.REGISTER_TYPE, () ->
-                SlotTypePreset.BACK.getMessageBuilder().build());
     }
 
     @Mod.EventBusSubscriber(modid = MODID)
@@ -57,30 +44,23 @@ public class CuriosQuarkOdditiesBackpack {
 
             if (stack.getItem() == BackpackModule.backpack) {
                 ICurio curioBackpack = new BackpackCurio(stack);
-
-                event.addCapability(CuriosCapability.ID_ITEM, new ICapabilityProvider() {
-                    final LazyOptional<ICurio> curio = LazyOptional.of(() -> curioBackpack);
-
-                    @Nonnull
-                    @Override
-                    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, Direction side) {
-                        return CuriosCapability.ITEM.orEmpty(capability, curio);
-                    }
-
-                });
+                event.addCapability(CuriosCapability.ID_ITEM, CuriosApi.createCurioProvider(curioBackpack));
             }
         }
 
         @SubscribeEvent
-        public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event){
-            if(!(event.getEntity() instanceof ServerPlayer player) || player.isDeadOrDying() || player.isRemoved() || event.getSlot() != EquipmentSlot.CHEST)
+        public static void onLivingEquipmentChange(LivingEquipmentChangeEvent event) {
+            if (!(event.getEntity() instanceof ServerPlayer player) || player.isDeadOrDying() || player.isRemoved() || event.getSlot() != EquipmentSlot.CHEST)
                 return;
 
-            if(event.getTo().getItem() == BackpackModule.backpack && !CuriosApi.getCuriosHelper().findCurios(player, BackpackModule.backpack).isEmpty()) {
-                player.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
-                if(!player.addItem(event.getTo()))
-                    player.drop(event.getTo(), false, true);
-            }
+            CuriosApi.getCuriosInventory(player).ifPresent(inventory -> {
+                if (event.getTo().getItem() == BackpackModule.backpack && !inventory.findCurios(BackpackModule.backpack).isEmpty()) {
+                    player.setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
+                    if (!player.addItem(event.getTo()))
+                        player.drop(event.getTo(), false, true);
+                }
+            });
+
         }
 
     }

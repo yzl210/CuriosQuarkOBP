@@ -15,10 +15,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import org.violetmoon.quark.addons.oddities.item.BackpackItem;
+import org.violetmoon.quark.base.client.handler.ModelHandler;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
-import vazkii.quark.addons.oddities.item.BackpackItem;
-import vazkii.quark.base.client.handler.ModelHandler;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class BackpackCurioRenderer implements ICurioRenderer {
@@ -27,9 +27,9 @@ public class BackpackCurioRenderer implements ICurioRenderer {
 
     @Override
     public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext, PoseStack poseStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource multiBufferSource, int light, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if(stack.getItem() instanceof BackpackItem backpack) {
+        if (stack.getItem() instanceof BackpackItem backpack) {
             EntityModel<T> entityModel = renderLayerParent.getModel();
-            if(entityModel instanceof HumanoidModel<T> humanoidModel)
+            if (entityModel instanceof HumanoidModel<T> humanoidModel)
                 humanoidModel.copyPropertiesTo(model);
             else
                 entityModel.copyPropertiesTo(model);
