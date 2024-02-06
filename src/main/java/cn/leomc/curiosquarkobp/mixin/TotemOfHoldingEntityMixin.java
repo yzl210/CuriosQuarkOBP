@@ -18,10 +18,10 @@ import java.util.List;
 @Mixin(TotemOfHoldingEntity.class)
 public abstract class TotemOfHoldingEntityMixin extends Entity {
 
-    @Shadow
+    @Shadow(remap = false)
     private List<ItemStack> equipedCurios;
 
-    @Shadow
+    @Shadow(remap = false)
     protected abstract Player getOwnerEntity();
 
     public TotemOfHoldingEntityMixin(EntityType<?> p_19870_, Level p_19871_) {

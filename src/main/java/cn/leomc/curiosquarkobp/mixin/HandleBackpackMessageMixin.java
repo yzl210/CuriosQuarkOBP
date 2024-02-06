@@ -22,7 +22,7 @@ import java.util.Optional;
 public abstract class HandleBackpackMessageMixin {
 
 
-    @Shadow
+    @Shadow(remap = false)
     public boolean open;
 
     /**

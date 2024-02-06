@@ -21,7 +21,7 @@ import java.util.function.Supplier;
 @Mixin(CPacketOpenVanilla.class)
 public class CPacketOpenVanillaMixin implements CQOBCarriedAccessor {
 
-    @Shadow
+    @Shadow(remap = false)
     @Final
     private ItemStack carried;
 
